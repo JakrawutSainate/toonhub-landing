@@ -80,6 +80,7 @@ export const CarouselItem: React.FC<CarouselItemProps> = ({ figurine, role, isMo
           // @ts-ignore
           imageRendering: 'crisp-edges',
           backfaceVisibility: 'hidden',
+          mixBlendMode: 'multiply',
         }}
         draggable={false}
       />
