@@ -9,30 +9,36 @@ import { InfoSection } from './(home)/components/InfoSection';
 import { DiscoverLink } from './(home)/components/DiscoverLink';
 import { GrainOverlay } from './components/common/GrainOverlay';
 
+// Static local imports for performance optimization and privacy
+import character1 from './(home)/assets/character-1.png';
+import character2 from './(home)/assets/character-2.png';
+import character3 from './(home)/assets/character-3.png';
+import character4 from './(home)/assets/character-4.png';
+
 const IMAGES_DATA = [
   {
-    src: '/character-1.png',
+    src: character1,
     bg: '#F4845F',
     panel: '#F79B7F',
     label: 'NEO RED',
     sub: 'RED_JACKET',
   },
   {
-    src: '/character-2.png',
+    src: character2,
     bg: '#6BBF7A',
     panel: '#85CC92',
     label: 'JADE SAGE',
     sub: 'BROWN_EAST',
   },
   {
-    src: '/character-3.png',
+    src: character3,
     bg: '#E882B4',
     panel: '#ED9DC4',
     label: 'CYBER CODE',
     sub: 'BLACK_BINARY',
   },
   {
-    src: '/character-4.png',
+    src: character4,
     bg: '#6EB5FF',
     panel: '#8DC4FF',
     label: 'DEEP BLUE',

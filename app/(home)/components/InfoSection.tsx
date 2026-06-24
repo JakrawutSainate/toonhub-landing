@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Figurine } from '../models/Figurine';
 
@@ -56,8 +57,7 @@ export const InfoSection: React.FC<InfoSectionProps> = ({
                     transform: isActive ? 'scale(1.1)' : 'scale(1)',
                   }}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={fig.src}
                     alt={fig.label}
                     className="w-full h-full object-contain object-bottom"

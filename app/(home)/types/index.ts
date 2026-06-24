@@ -1,5 +1,7 @@
+import { StaticImageData } from 'next/image';
+
 export interface FigurineData {
-  src: string;
+  src: string | StaticImageData;
   bg: string;
   panel: string;
   label: string;

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Figurine } from '../models/Figurine';
 import { FigurineRole } from '../types';
 
@@ -123,8 +124,7 @@ export const CarouselItem: React.FC<CarouselItemProps> = ({ figurine, role, isMo
       </div>
 
       {/* figurine image */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={figurine.src}
         alt="Toon Figurine"
         className={`relative w-full h-full object-contain object-bottom select-none z-10 transition-transform duration-300 ${
@@ -138,6 +138,7 @@ export const CarouselItem: React.FC<CarouselItemProps> = ({ figurine, role, isMo
           mixBlendMode: 'multiply',
         }}
         draggable={false}
+        priority={role === 'center' || role === 'left' || role === 'right'}
       />
     </div>
   );

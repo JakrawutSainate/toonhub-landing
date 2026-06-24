@@ -1,7 +1,8 @@
+import { StaticImageData } from 'next/image';
 import { FigurineData } from '../types';
 
 export class Figurine {
-  public readonly src: string;
+  public readonly src: string | StaticImageData;
   public readonly bg: string;
   public readonly panel: string;
   public readonly label: string;
@@ -25,7 +26,7 @@ export class Figurine {
         return;
       }
       const img = new Image();
-      img.src = this.src;
+      img.src = typeof this.src === 'string' ? this.src : this.src.src;
       img.onload = () => resolve(img);
       img.onerror = (err) => reject(err);
     });
