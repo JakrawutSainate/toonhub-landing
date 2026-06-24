@@ -21,7 +21,7 @@ export const CarouselItem: React.FC<CarouselItemProps> = ({ figurine, role, isMo
   switch (role) {
     case 'center':
       transform = `translateX(-50%) scale(${isMobile ? 1.25 : 1.68})`;
-      filter = 'blur(0px)';
+      filter = 'none';
       opacity = 1;
       zIndex = 20;
       left = '50%';
@@ -75,6 +75,12 @@ export const CarouselItem: React.FC<CarouselItemProps> = ({ figurine, role, isMo
         src={figurine.src}
         alt="Toon Figurine"
         className="w-full h-full object-contain object-bottom select-none"
+        style={{
+          imageRendering: '-webkit-optimize-contrast',
+          // @ts-ignore
+          imageRendering: 'crisp-edges',
+          backfaceVisibility: 'hidden',
+        }}
         draggable={false}
       />
     </div>
