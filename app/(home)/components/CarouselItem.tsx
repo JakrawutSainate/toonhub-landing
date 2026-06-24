@@ -15,44 +15,66 @@ export const CarouselItem: React.FC<CarouselItemProps> = ({ figurine, role, isMo
   let opacity = 1;
   let zIndex = 5;
   let left = '50%';
-  let height = isMobile ? '13%' : '22%';
+  let height = isMobile ? '20%' : '22%';
   let bottom = isMobile ? '32%' : '12%';
 
-  switch (role) {
-    case 'center':
-      transform = `translateX(-50%) scale(${isMobile ? 1.25 : 1.68})`;
+  if (isMobile) {
+    // Mobile Layout: Only show center figurine. Others fade out behind.
+    if (role === 'center') {
+      transform = 'translateX(-50%) scale(1.15)';
       filter = 'none';
       opacity = 1;
       zIndex = 20;
       left = '50%';
-      height = isMobile ? '60%' : '92%';
-      bottom = isMobile ? '22%' : '0%';
-      break;
+      height = '50%';
+      bottom = '32%';
+    } else {
+      transform = 'translateX(-50%) scale(0.6)';
+      filter = 'blur(8px)';
+      opacity = 0;
+      zIndex = 5;
+      left = '50%';
+      height = '20%';
+      bottom = '32%';
+    }
+  } else {
+    // Desktop Layout: Horizontal carousel
+    switch (role) {
+      case 'center':
+        transform = 'translateX(-50%) scale(1.68)';
+        filter = 'none';
+        opacity = 1;
+        zIndex = 20;
+        left = '50%';
+        height = '92%';
+        bottom = '0%';
+        break;
 
-    case 'left':
-      transform = 'translateX(-50%) scale(1)';
-      filter = 'blur(2px)';
-      opacity = 0.85;
-      zIndex = 10;
-      left = isMobile ? '20%' : '30%';
-      height = isMobile ? '16%' : '28%';
-      bottom = isMobile ? '32%' : '12%';
-      break;
+      case 'left':
+        transform = 'translateX(-50%) scale(1)';
+        filter = 'blur(2px)';
+        opacity = 0.85;
+        zIndex = 10;
+        left = '30%';
+        height = '28%';
+        bottom = '12%';
+        break;
 
-    case 'right':
-      transform = 'translateX(-50%) scale(1)';
-      filter = 'blur(2px)';
-      opacity = 0.85;
-      zIndex = 10;
-      left = isMobile ? '80%' : '70%';
-      height = isMobile ? '16%' : '28%';
-      bottom = isMobile ? '32%' : '12%';
-      break;
+      case 'right':
+        transform = 'translateX(-50%) scale(1)';
+        filter = 'blur(2px)';
+        opacity = 0.85;
+        zIndex = 10;
+        left = '70%';
+        height = '28%';
+        bottom = '12%';
+        break;
 
-    case 'back':
-    default:
-      // default values already set above
-      break;
+      case 'back':
+      default:
+        // default values set above
+        break;
+    }
   }
 
   return (

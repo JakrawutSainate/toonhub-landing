@@ -132,7 +132,19 @@ export default function Home() {
         <Carousel figurines={figurines} roles={roles} isMobile={isMobile} />
 
         {/* 5. Bottom-left text + nav buttons */}
-        <InfoSection onNavigate={navigate} />
+        <InfoSection
+          figurines={figurines}
+          activeIndex={carouselState.activeIndex}
+          onNavigate={navigate}
+          onSelect={(index) => {
+            if (carouselState.isAnimating || index === carouselState.activeIndex) return;
+            setCarouselState((prev) => prev.select(index));
+            setTimeout(() => {
+              setCarouselState((prev) => prev.finishAnimation());
+            }, 650);
+          }}
+          isMobile={isMobile}
+        />
 
         {/* 6. Bottom-right link "DISCOVER IT" */}
         <DiscoverLink />

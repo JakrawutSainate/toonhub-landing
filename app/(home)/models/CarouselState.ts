@@ -34,6 +34,15 @@ export class CarouselState {
   }
 
   /**
+   * Transition directly to a target index, locking input.
+   */
+  public select(targetIndex: number): CarouselState {
+    if (this.isAnimating) return this;
+    if (targetIndex < 0 || targetIndex >= this.totalItems) return this;
+    return new CarouselState(targetIndex, true, this.totalItems);
+  }
+
+  /**
    * Release the animation lock.
    */
   public finishAnimation(): CarouselState {
