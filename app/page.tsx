@@ -1,65 +1,118 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState, useMemo } from 'react';
+import { Figurine } from './(home)/models/Figurine';
+import { CarouselState } from './(home)/models/CarouselState';
+import { BrandLabel } from './(home)/components/BrandLabel';
+import { Carousel } from './(home)/components/Carousel';
+import { InfoSection } from './(home)/components/InfoSection';
+import { DiscoverLink } from './(home)/components/DiscoverLink';
+import { GrainOverlay } from './components/common/GrainOverlay';
+
+const IMAGES_DATA = [
+  {
+    src: 'https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/1.02464a56.png',
+    bg: '#F4845F',
+    panel: '#F79B7F',
+  },
+  {
+    src: 'https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/2.b977faab.png',
+    bg: '#6BBF7A',
+    panel: '#85CC92',
+  },
+  {
+    src: 'https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/3.4df853b4.png',
+    bg: '#E882B4',
+    panel: '#ED9DC4',
+  },
+  {
+    src: 'https://fifth-gentle-45902158.figma.site/_components/v2/4de492f6d9cf8244ad5293233e5c6f52407d42fc/4.4457fbce.png',
+    bg: '#6EB5FF',
+    panel: '#8DC4FF',
+  },
+];
 
 export default function Home() {
+  // Instantiate figurines (OOP models)
+  const figurines = useMemo(() => IMAGES_DATA.map((data) => new Figurine(data)), []);
+
+  // Preload all 4 figurines on mount
+  useEffect(() => {
+    figurines.forEach((f) => {
+      f.preload().catch((err) => {
+        console.error('Failed to preload figurine image:', f.src, err);
+      });
+    });
+  }, [figurines]);
+
+  // Carousel state managed by OOP Controller
+  const [carouselState, setCarouselState] = useState(() => new CarouselState(0, false, figurines.length));
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Resize handler for isMobile state
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const navigate = (direction: 'next' | 'prev') => {
+    if (carouselState.isAnimating) return;
+
+    // Transition state to next role indices, locking input
+    setCarouselState((prev) => prev.navigate(direction));
+
+    // Release animation lock after 650ms transition
+    setTimeout(() => {
+      setCarouselState((prev) => prev.finishAnimation());
+    }, 650);
+  };
+
+  const activeFigurine = figurines[carouselState.activeIndex];
+  const roles = carouselState.getRoles();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div
+      className="relative w-full overflow-hidden transition-colors duration-[650ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+      style={{
+        backgroundColor: activeFigurine.bg,
+        fontFamily: "'Inter', sans-serif",
+      }}
+    >
+      <div className="relative w-full h-[100vh] overflow-hidden">
+        {/* 1. Grain overlay */}
+        <GrainOverlay />
+
+        {/* 2. Giant ghost text "3D SHAPE" */}
+        <div
+          id="ghost-text"
+          className="absolute inset-x-0 flex items-center justify-center pointer-events-none select-none text-white opacity-100 uppercase tracking-[-0.02em] whitespace-nowrap leading-none"
+          style={{
+            zIndex: 2,
+            top: '18%',
+            fontFamily: "'Anton', sans-serif",
+            fontSize: 'clamp(90px, 28vw, 380px)',
+            fontWeight: 900,
+          }}
+        >
+          3D SHAPE
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+
+        {/* 3. Top-left brand label "TOONHUB" */}
+        <BrandLabel />
+
+        {/* 4. Carousel of Figurines */}
+        <Carousel figurines={figurines} roles={roles} isMobile={isMobile} />
+
+        {/* 5. Bottom-left text + nav buttons */}
+        <InfoSection onNavigate={navigate} />
+
+        {/* 6. Bottom-right link "DISCOVER IT" */}
+        <DiscoverLink />
+      </div>
     </div>
   );
 }
