@@ -4,11 +4,15 @@ export class Figurine {
   public readonly src: string;
   public readonly bg: string;
   public readonly panel: string;
+  public readonly label: string;
+  public readonly sub: string;
 
   constructor(data: FigurineData) {
     this.src = data.src;
     this.bg = data.bg;
     this.panel = data.panel;
+    this.label = data.label;
+    this.sub = data.sub;
   }
 
   /**

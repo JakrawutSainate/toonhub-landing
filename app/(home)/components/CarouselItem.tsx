@@ -70,11 +70,44 @@ export const CarouselItem: React.FC<CarouselItemProps> = ({ figurine, role, isMo
         willChange: 'transform, filter, opacity',
       }}
     >
+      {/* Sci-Fi Glassmorphic Card Background */}
+      <div
+        className="absolute inset-x-4 top-8 bottom-4 rounded-[32px] border border-white/20 transition-all duration-[650ms] ease-[cubic-bezier(0.4,0,0.2,1)] flex flex-col justify-between p-4 overflow-hidden"
+        style={{
+          backgroundColor: figurine.panel + '18', // 10% opacity hex
+          backdropFilter: role === 'center' ? 'blur(16px)' : 'blur(4px)',
+          boxShadow: role === 'center'
+            ? `0 24px 48px -12px rgba(0, 0, 0, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.25), 0 0 35px ${figurine.panel}45`
+            : 'none',
+          opacity: role === 'center' ? 0.9 : 0,
+          transform: role === 'center' ? 'scale(1.04)' : 'scale(0.9)',
+          zIndex: 1,
+        }}
+      >
+        {/* Tech Card HUD Header */}
+        <div className="flex justify-between items-start text-[8px] sm:text-[9px] font-mono tracking-widest text-white/60">
+          <div>TOON_{figurine.sub}</div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>ONLINE</span>
+          </div>
+        </div>
+
+        {/* Tech Card HUD Bottom */}
+        <div className="flex justify-between items-end text-[7px] sm:text-[8px] font-mono tracking-widest text-white/50 border-t border-white/10 pt-2">
+          <div>SCALE 1:6</div>
+          <div>EDITION 1.00</div>
+        </div>
+      </div>
+
+      {/* figurine image */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={figurine.src}
         alt="Toon Figurine"
-        className="w-full h-full object-contain object-bottom select-none"
+        className={`relative w-full h-full object-contain object-bottom select-none z-10 transition-transform duration-300 ${
+          role === 'center' ? 'animate-bob' : ''
+        }`}
         style={{
           imageRendering: '-webkit-optimize-contrast',
           // @ts-ignore

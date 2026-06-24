@@ -2,6 +2,8 @@ export interface FigurineData {
   src: string;
   bg: string;
   panel: string;
+  label: string;
+  sub: string;
 }
 
 export type FigurineRole = 'center' | 'left' | 'right' | 'back';

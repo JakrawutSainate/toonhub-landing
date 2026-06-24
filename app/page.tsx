@@ -14,21 +14,29 @@ const IMAGES_DATA = [
     src: '/character-1.png',
     bg: '#F4845F',
     panel: '#F79B7F',
+    label: 'NEO RED',
+    sub: 'RED_JACKET',
   },
   {
     src: '/character-2.png',
     bg: '#6BBF7A',
     panel: '#85CC92',
+    label: 'JADE SAGE',
+    sub: 'BROWN_EAST',
   },
   {
     src: '/character-3.png',
     bg: '#E882B4',
     panel: '#ED9DC4',
+    label: 'CYBER CODE',
+    sub: 'BLACK_BINARY',
   },
   {
     src: '/character-4.png',
     bg: '#6EB5FF',
     panel: '#8DC4FF',
+    label: 'DEEP BLUE',
+    sub: 'JEANS_CROSS',
   },
 ];
 
@@ -86,19 +94,35 @@ export default function Home() {
         {/* 1. Grain overlay */}
         <GrainOverlay />
 
-        {/* 2. Giant ghost text "3D SHAPE" */}
+        {/* 2. Giant ghost text */}
         <div
-          id="ghost-text"
-          className="absolute inset-x-0 flex items-center justify-center pointer-events-none select-none text-white opacity-100 uppercase tracking-[-0.02em] whitespace-nowrap leading-none"
+          id="ghost-text-container"
+          className="absolute inset-x-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
           style={{
             zIndex: 2,
             top: '18%',
-            fontFamily: "'Anton', sans-serif",
-            fontSize: 'clamp(90px, 28vw, 380px)',
-            fontWeight: 900,
+            height: 'clamp(100px, 30vw, 400px)',
           }}
         >
-          3D SHAPE
+          {figurines.map((fig, idx) => (
+            <div
+              key={idx}
+              className="absolute text-white uppercase tracking-[-0.02em] whitespace-nowrap leading-none transition-all duration-[650ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+              style={{
+                fontFamily: "'Anton', sans-serif",
+                fontSize: 'clamp(90px, 28vw, 380px)',
+                fontWeight: 900,
+                opacity: carouselState.activeIndex === idx ? 0.95 : 0,
+                transform: carouselState.activeIndex === idx
+                  ? 'scale(1) translateY(0)'
+                  : carouselState.activeIndex === (idx + 1) % 4
+                    ? 'scale(0.85) translateY(60px)'
+                    : 'scale(0.85) translateY(-60px)',
+              }}
+            >
+              {fig.label}
+            </div>
+          ))}
         </div>
 
         {/* 3. Top-left brand label "TOONHUB" */}
